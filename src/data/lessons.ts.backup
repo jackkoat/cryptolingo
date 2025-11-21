@@ -1,0 +1,667 @@
+// Learning Content Data for CryptoLingo
+
+export interface Question {
+  id: string;
+  type: 'multiple-choice' | 'fill-blank' | 'matching' | 'true-false';
+  question: string;
+  options?: string[];
+  correctAnswer: string | number | boolean;
+  explanation: string;
+  matchingPairs?: { term: string; definition: string }[];
+}
+
+export interface Lesson {
+  id: string;
+  pathId: string;
+  title: string;
+  description: string;
+  xpReward: number;
+  estimatedMinutes: number;
+  questions: Question[];
+}
+
+export interface LearningPath {
+  id: string;
+  name: string;
+  description: string;
+  lessons: string[];
+  totalXP: number;
+}
+
+export const LEARNING_PATHS: LearningPath[] = [
+  {
+    id: 'beginner-fundamentals',
+    name: 'Beginner Fundamentals',
+    description: 'Master the core concepts of blockchain and cryptocurrency',
+    lessons: ['blockchain-basics', 'understanding-crypto', 'keys-security', 'wallet-basics'],
+    totalXP: 500,
+  },
+  {
+    id: 'defi-essentials',
+    name: 'DeFi Essentials',
+    description: 'Learn about decentralized finance and its powerful applications',
+    lessons: ['what-is-defi', 'swapping-trading', 'liquidity-pools', 'staking-basics'],
+    totalXP: 650,
+  },
+];
+
+export const LESSONS: Lesson[] = [
+  // Path 1: Beginner Fundamentals
+  {
+    id: 'blockchain-basics',
+    pathId: 'beginner-fundamentals',
+    title: 'What is Blockchain?',
+    description: 'Learn the fundamental concepts of distributed ledger technology',
+    xpReward: 150,
+    estimatedMinutes: 8,
+    questions: [
+      {
+        id: 'bb-1',
+        type: 'multiple-choice',
+        question: 'What is a blockchain?',
+        options: [
+          'A type of cryptocurrency',
+          'A distributed digital ledger that records transactions',
+          'A physical chain of computer blocks',
+          'A programming language',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Perfect! A blockchain is a distributed digital ledger that records transactions across many computers in a way that prevents retroactive alteration.',
+      },
+      {
+        id: 'bb-2',
+        type: 'true-false',
+        question: 'Blockchain data can be easily deleted or modified by anyone.',
+        correctAnswer: false,
+        explanation:
+          'Nice work! Once data is written to a blockchain, it becomes extremely difficult to modify or delete due to cryptographic linking and distributed consensus.',
+      },
+      {
+        id: 'bb-3',
+        type: 'fill-blank',
+        question: 'Each block in a blockchain contains a cryptographic _____ of the previous block.',
+        correctAnswer: 'hash',
+        explanation:
+          'Spot on! Each block contains a cryptographic hash of the previous block, creating an immutable chain of records.',
+      },
+      {
+        id: 'bb-4',
+        type: 'multiple-choice',
+        question: 'What makes blockchain secure?',
+        options: [
+          'It requires passwords',
+          'Decentralization and cryptographic hashing',
+          'Only governments can access it',
+          'It stores data in the cloud',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Excellent! Blockchain security comes from its decentralized nature and cryptographic hashing, making it extremely difficult to alter past transactions.',
+      },
+      {
+        id: 'bb-5',
+        type: 'true-false',
+        question: 'Every computer on a blockchain network has the same copy of the ledger.',
+        correctAnswer: true,
+        explanation:
+          'You got it! All nodes in a blockchain network maintain a synchronized copy of the entire ledger, ensuring transparency and redundancy.',
+      },
+      {
+        id: 'bb-6',
+        type: 'multiple-choice',
+        question: 'Who invented blockchain technology?',
+        options: [
+          'Bill Gates',
+          'Satoshi Nakamoto',
+          'Elon Musk',
+          'Mark Zuckerberg',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Great job! Satoshi Nakamoto introduced blockchain technology through Bitcoin in 2008. Their true identity remains unknown.',
+      },
+      {
+        id: 'bb-7',
+        type: 'fill-blank',
+        question: 'In a blockchain, transactions are grouped together into _____.',
+        correctAnswer: 'blocks',
+        explanation:
+          'Exactly right! Transactions are bundled into blocks, which are then added to the chain in chronological order.',
+      },
+      {
+        id: 'bb-8',
+        type: 'true-false',
+        question: 'Blockchain requires a central authority to validate transactions.',
+        correctAnswer: false,
+        explanation:
+          'Correct! One of blockchain\'s key features is decentralization - no central authority is needed. Network participants validate transactions through consensus.',
+      },
+      {
+        id: 'bb-9',
+        type: 'multiple-choice',
+        question: 'What happens when someone tries to tamper with a block in the chain?',
+        options: [
+          'Nothing, it goes unnoticed',
+          'The entire network accepts the change',
+          'The tampered block\'s hash changes, breaking the chain and alerting the network',
+          'Only that person\'s copy is affected',
+        ],
+        correctAnswer: 2,
+        explanation:
+          'Awesome! Any tampering changes the block\'s hash, which breaks the chain and is immediately detected by other nodes.',
+      },
+      {
+        id: 'bb-10',
+        type: 'matching',
+        question: 'Match blockchain terms with their definitions:',
+        matchingPairs: [
+          { term: 'Block', definition: 'Container of transaction data' },
+          { term: 'Chain', definition: 'Linked sequence of blocks' },
+          { term: 'Node', definition: 'Computer maintaining blockchain copy' },
+          { term: 'Hash', definition: 'Unique cryptographic identifier' },
+        ],
+        correctAnswer: '',
+        explanation:
+          'Perfect matching! Understanding these core terms is essential for grasping how blockchain technology functions.',
+      },
+      {
+        id: 'bb-11',
+        type: 'true-false',
+        question: 'Blockchain technology can only be used for cryptocurrency.',
+        correctAnswer: false,
+        explanation:
+          'Well done! While blockchain powers cryptocurrencies, it has many other applications including supply chain, healthcare, voting systems, and digital identity.',
+      },
+      {
+        id: 'bb-12',
+        type: 'multiple-choice',
+        question: 'What is a "genesis block"?',
+        options: [
+          'The most recent block in the chain',
+          'The first block in a blockchain',
+          'A block that contains errors',
+          'A block created by miners',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Brilliant! The genesis block is the very first block in a blockchain, serving as the foundation for all subsequent blocks.',
+      },
+    ],
+  },
+  {
+    id: 'understanding-crypto',
+    pathId: 'beginner-fundamentals',
+    title: 'Understanding Cryptocurrency',
+    description: 'Discover what cryptocurrency is and how it works',
+    xpReward: 100,
+    estimatedMinutes: 5,
+    questions: [
+      {
+        id: 'uc-1',
+        type: 'multiple-choice',
+        question: 'What is cryptocurrency?',
+        options: [
+          'Physical coins made of precious metals',
+          'Digital or virtual currency secured by cryptography',
+          'A type of stock market investment',
+          'Government-issued paper money',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Cryptocurrency is a digital or virtual currency that uses cryptography for security and operates independently of central banks.',
+      },
+      {
+        id: 'uc-2',
+        type: 'fill-blank',
+        question: 'Bitcoin was created in 2009 by an anonymous person or group known as _____.',
+        correctAnswer: 'Satoshi Nakamoto',
+        explanation:
+          'Satoshi Nakamoto is the pseudonym used by the creator(s) of Bitcoin. Their true identity remains unknown.',
+      },
+      {
+        id: 'uc-3',
+        type: 'multiple-choice',
+        question: 'Which statement about cryptocurrency is TRUE?',
+        options: [
+          'All cryptocurrencies are the same',
+          'Cryptocurrency transactions can be reversed easily',
+          'Cryptocurrencies operate 24/7 without central authority',
+          'Only one cryptocurrency exists',
+        ],
+        correctAnswer: 2,
+        explanation:
+          'Cryptocurrencies operate continuously without a central authority, unlike traditional banking systems with limited hours.',
+      },
+      {
+        id: 'uc-4',
+        type: 'matching',
+        question: 'Match cryptocurrency use cases:',
+        matchingPairs: [
+          { term: 'Store of Value', definition: 'Holding wealth like digital gold' },
+          { term: 'Medium of Exchange', definition: 'Buying goods and services' },
+          { term: 'Unit of Account', definition: 'Measuring value of assets' },
+          { term: 'Remittance', definition: 'Cross-border money transfers' },
+        ],
+        correctAnswer: '',
+        explanation: 'Cryptocurrencies serve multiple financial functions in the digital economy.',
+      },
+    ],
+  },
+  {
+    id: 'keys-security',
+    pathId: 'beginner-fundamentals',
+    title: 'Public vs Private Keys',
+    description: 'Understand cryptographic keys and their role in security',
+    xpReward: 150,
+    estimatedMinutes: 7,
+    questions: [
+      {
+        id: 'ks-1',
+        type: 'multiple-choice',
+        question: 'What is a private key?',
+        options: [
+          'A password to your email',
+          'A secret code that proves ownership of crypto assets',
+          'Your wallet address',
+          'A public identifier',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'A private key is a secret cryptographic code that proves ownership and allows you to access and spend your cryptocurrency.',
+      },
+      {
+        id: 'ks-2',
+        type: 'fill-blank',
+        question: 'Your _____ key can be shared publicly to receive cryptocurrency.',
+        correctAnswer: 'public',
+        explanation:
+          'Your public key (or wallet address) can be safely shared with others to receive cryptocurrency, like an email address.',
+      },
+      {
+        id: 'ks-3',
+        type: 'multiple-choice',
+        question: 'If someone gets your private key, they can:',
+        options: [
+          'Only view your balance',
+          'Send you more cryptocurrency',
+          'Access and control all your crypto assets',
+          'Nothing, it is harmless',
+        ],
+        correctAnswer: 2,
+        explanation:
+          'Anyone with your private key has complete control over your cryptocurrency. Never share it with anyone!',
+      },
+      {
+        id: 'ks-4',
+        type: 'matching',
+        question: 'Match key security concepts:',
+        matchingPairs: [
+          { term: 'Private Key', definition: 'Must be kept secret always' },
+          { term: 'Public Key', definition: 'Safe to share for receiving funds' },
+          { term: 'Seed Phrase', definition: 'Backup recovery words' },
+          { term: 'Encryption', definition: 'Secures data using cryptography' },
+        ],
+        correctAnswer: '',
+        explanation:
+          'Understanding the difference between public and private information is crucial for crypto security.',
+      },
+      {
+        id: 'ks-5',
+        type: 'multiple-choice',
+        question: 'Best practice for storing your seed phrase:',
+        options: [
+          'Save it in a cloud service',
+          'Email it to yourself',
+          'Write it on paper and store it securely offline',
+          'Share it with your friends for backup',
+        ],
+        correctAnswer: 2,
+        explanation:
+          'The safest way to store your seed phrase is to write it on paper and keep it in a secure, offline location.',
+      },
+    ],
+  },
+  {
+    id: 'wallet-basics',
+    pathId: 'beginner-fundamentals',
+    title: 'Wallet Basics & Security',
+    description: 'Learn about crypto wallets and how to keep them secure',
+    xpReward: 150,
+    estimatedMinutes: 7,
+    questions: [
+      {
+        id: 'wb-1',
+        type: 'multiple-choice',
+        question: 'What is a cryptocurrency wallet?',
+        options: [
+          'A physical wallet for coins',
+          'Software or hardware that stores your private keys',
+          'A bank account for crypto',
+          'A website that sells cryptocurrency',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'A crypto wallet is software or hardware that stores your private keys and allows you to interact with blockchain networks.',
+      },
+      {
+        id: 'wb-2',
+        type: 'fill-blank',
+        question: 'A _____ wallet is connected to the internet, while a cold wallet is offline.',
+        correctAnswer: 'hot',
+        explanation:
+          'Hot wallets are connected to the internet (convenient but less secure), while cold wallets are offline (more secure but less convenient).',
+      },
+      {
+        id: 'wb-3',
+        type: 'matching',
+        question: 'Match wallet types with their characteristics:',
+        matchingPairs: [
+          { term: 'Hardware Wallet', definition: 'Physical device, highly secure' },
+          { term: 'Software Wallet', definition: 'App on phone or computer' },
+          { term: 'Paper Wallet', definition: 'Printed private keys' },
+          { term: 'Exchange Wallet', definition: 'Hosted by trading platform' },
+        ],
+        correctAnswer: '',
+        explanation: 'Different wallet types offer varying levels of security and convenience.',
+      },
+      {
+        id: 'wb-4',
+        type: 'multiple-choice',
+        question: 'Which wallet type offers the highest security?',
+        options: ['Exchange wallet', 'Mobile wallet', 'Hardware wallet (cold storage)', 'Web wallet'],
+        correctAnswer: 2,
+        explanation:
+          'Hardware wallets offer the highest security because your private keys never leave the device and are stored offline.',
+      },
+      {
+        id: 'wb-5',
+        type: 'multiple-choice',
+        question: 'What should you NEVER do with your wallet?',
+        options: [
+          'Update the software',
+          'Share your private key or seed phrase',
+          'Check your balance',
+          'Make a backup',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Never share your private key or seed phrase with anyone. This gives complete access to your funds!',
+      },
+    ],
+  },
+
+  // Path 2: DeFi Essentials
+  {
+    id: 'what-is-defi',
+    pathId: 'defi-essentials',
+    title: 'What is DeFi?',
+    description: 'Explore decentralized finance and its advantages',
+    xpReward: 100,
+    estimatedMinutes: 5,
+    questions: [
+      {
+        id: 'wd-1',
+        type: 'multiple-choice',
+        question: 'What does DeFi stand for?',
+        options: [
+          'Defined Finance',
+          'Decentralized Finance',
+          'Digital Finance',
+          'Distributed Finance',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'DeFi stands for Decentralized Finance, a financial system built on blockchain without traditional intermediaries.',
+      },
+      {
+        id: 'wd-2',
+        type: 'fill-blank',
+        question: 'DeFi eliminates the need for traditional financial _____ like banks.',
+        correctAnswer: 'intermediaries',
+        explanation:
+          'DeFi removes intermediaries like banks and brokers, allowing peer-to-peer financial transactions.',
+      },
+      {
+        id: 'wd-3',
+        type: 'multiple-choice',
+        question: 'What is a key advantage of DeFi?',
+        options: [
+          'Requires government approval',
+          'Only available during business hours',
+          'Accessible 24/7 to anyone with internet',
+          'Controlled by central banks',
+        ],
+        correctAnswer: 2,
+        explanation:
+          'DeFi is accessible 24/7 to anyone with an internet connection, without geographic or institutional restrictions.',
+      },
+      {
+        id: 'wd-4',
+        type: 'matching',
+        question: 'Match DeFi concepts:',
+        matchingPairs: [
+          { term: 'Smart Contract', definition: 'Self-executing code on blockchain' },
+          { term: 'DEX', definition: 'Decentralized exchange' },
+          { term: 'Yield Farming', definition: 'Earning rewards on crypto deposits' },
+          { term: 'Liquidity', definition: 'Available trading assets' },
+        ],
+        correctAnswer: '',
+        explanation: 'These fundamental DeFi concepts form the foundation of decentralized finance.',
+      },
+    ],
+  },
+  {
+    id: 'swapping-trading',
+    pathId: 'defi-essentials',
+    title: 'Swapping & Trading',
+    description: 'Learn how to trade crypto on decentralized exchanges',
+    xpReward: 150,
+    estimatedMinutes: 7,
+    questions: [
+      {
+        id: 'st-1',
+        type: 'multiple-choice',
+        question: 'What is a DEX (Decentralized Exchange)?',
+        options: [
+          'A physical crypto trading location',
+          'A peer-to-peer marketplace for trading crypto without a central authority',
+          'A government-regulated exchange',
+          'A type of cryptocurrency',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'A DEX is a peer-to-peer marketplace where users can trade cryptocurrencies directly without a centralized intermediary.',
+      },
+      {
+        id: 'st-2',
+        type: 'fill-blank',
+        question: '_____ is the difference between expected and actual price when executing a trade.',
+        correctAnswer: 'Slippage',
+        explanation:
+          'Slippage occurs when the actual trade price differs from the expected price due to market movement or low liquidity.',
+      },
+      {
+        id: 'st-3',
+        type: 'multiple-choice',
+        question: 'On a DEX, who holds custody of your funds?',
+        options: [
+          'The exchange operator',
+          'The government',
+          'You maintain custody via your wallet',
+          'A third-party custodian',
+        ],
+        correctAnswer: 2,
+        explanation:
+          'On DEXs, you maintain custody of your funds through your wallet. The exchange never holds your assets.',
+      },
+      {
+        id: 'st-4',
+        type: 'matching',
+        question: 'Match trading concepts:',
+        matchingPairs: [
+          { term: 'Market Order', definition: 'Execute trade at current price' },
+          { term: 'Limit Order', definition: 'Set specific price for trade' },
+          { term: 'Liquidity Pool', definition: 'Funds available for trading' },
+          { term: 'Gas Fee', definition: 'Transaction cost on blockchain' },
+        ],
+        correctAnswer: '',
+        explanation: 'Understanding these trading concepts helps you make better trading decisions.',
+      },
+      {
+        id: 'st-5',
+        type: 'multiple-choice',
+        question: 'What affects slippage on a trade?',
+        options: [
+          'The color of your wallet',
+          'Trading volume and liquidity pool size',
+          'Your account age',
+          'Time of day only',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Slippage is primarily affected by trading volume and liquidity pool size. Larger pools typically have less slippage.',
+      },
+    ],
+  },
+  {
+    id: 'liquidity-pools',
+    pathId: 'defi-essentials',
+    title: 'Liquidity Pools',
+    description: 'Understand how liquidity pools power DeFi trading',
+    xpReward: 200,
+    estimatedMinutes: 10,
+    questions: [
+      {
+        id: 'lp-1',
+        type: 'multiple-choice',
+        question: 'What is a liquidity pool?',
+        options: [
+          'A swimming pool at a crypto conference',
+          'A collection of funds locked in a smart contract to facilitate trading',
+          'A type of cryptocurrency',
+          'A physical vault for storing crypto',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'A liquidity pool is a collection of funds locked in a smart contract, used to facilitate trading on decentralized exchanges.',
+      },
+      {
+        id: 'lp-2',
+        type: 'fill-blank',
+        question: 'People who provide funds to liquidity pools are called _____ providers.',
+        correctAnswer: 'liquidity',
+        explanation:
+          'Liquidity providers (LPs) deposit their assets into pools to enable trading and earn fees in return.',
+      },
+      {
+        id: 'lp-3',
+        type: 'multiple-choice',
+        question: 'How do liquidity providers earn rewards?',
+        options: [
+          'By winning competitions',
+          'Through trading fees collected from swaps',
+          'By mining new coins',
+          'Government subsidies',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Liquidity providers earn a portion of the trading fees generated by swaps in their pool.',
+      },
+      {
+        id: 'lp-4',
+        type: 'fill-blank',
+        question: '_____ loss occurs when the price ratio of tokens in a pool changes significantly.',
+        correctAnswer: 'Impermanent',
+        explanation:
+          'Impermanent loss is the temporary loss of funds experienced by liquidity providers due to price volatility.',
+      },
+      {
+        id: 'lp-5',
+        type: 'matching',
+        question: 'Match liquidity pool concepts:',
+        matchingPairs: [
+          { term: 'LP Token', definition: 'Receipt for pool deposit' },
+          { term: 'AMM', definition: 'Automated Market Maker algorithm' },
+          { term: 'Pool Ratio', definition: 'Balance of token pairs' },
+          { term: 'Fee APR', definition: 'Annual percentage return from fees' },
+        ],
+        correctAnswer: '',
+        explanation: 'These concepts are essential for understanding liquidity pool mechanics.',
+      },
+    ],
+  },
+  {
+    id: 'staking-basics',
+    pathId: 'defi-essentials',
+    title: 'Staking Basics',
+    description: 'Learn how staking works and earn passive income',
+    xpReward: 200,
+    estimatedMinutes: 10,
+    questions: [
+      {
+        id: 'sb-1',
+        type: 'multiple-choice',
+        question: 'What is cryptocurrency staking?',
+        options: [
+          'Selling your crypto immediately',
+          'Locking up crypto to support blockchain operations and earn rewards',
+          'Trading crypto frequently',
+          'Storing crypto on an exchange',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Staking involves locking cryptocurrency to support blockchain network operations (like validation) in exchange for rewards.',
+      },
+      {
+        id: 'sb-2',
+        type: 'fill-blank',
+        question: 'Staking is used in _____ of Stake consensus mechanisms.',
+        correctAnswer: 'Proof',
+        explanation:
+          'Staking is a core component of Proof of Stake (PoS) consensus mechanisms, which validate transactions and secure the network.',
+      },
+      {
+        id: 'sb-3',
+        type: 'multiple-choice',
+        question: 'What is a key benefit of staking?',
+        options: [
+          'Guaranteed profits',
+          'Earning passive income through staking rewards',
+          'Free cryptocurrency with no risk',
+          'Immediate access to funds at all times',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Staking allows you to earn passive income through rewards, though funds are typically locked for a period.',
+      },
+      {
+        id: 'sb-4',
+        type: 'matching',
+        question: 'Match staking concepts:',
+        matchingPairs: [
+          { term: 'Validator', definition: 'Node that validates transactions' },
+          { term: 'Delegation', definition: 'Assigning stake to validator' },
+          { term: 'Lock Period', definition: 'Time funds are locked' },
+          { term: 'APY', definition: 'Annual percentage yield earned' },
+        ],
+        correctAnswer: '',
+        explanation: 'Understanding staking terminology helps you make informed staking decisions.',
+      },
+      {
+        id: 'sb-5',
+        type: 'multiple-choice',
+        question: 'What is a risk of staking?',
+        options: [
+          'No risks exist',
+          'Locked funds and potential slashing penalties',
+          'Too much profit',
+          'Immediate loss of all assets',
+        ],
+        correctAnswer: 1,
+        explanation:
+          'Staking risks include locked liquidity (cannot access funds immediately) and potential slashing penalties for validator misbehavior.',
+      },
+    ],
+  },
+];
