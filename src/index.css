@@ -156,12 +156,12 @@ body {
 
 /* Card hover effects */
 .card-hover-lift {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-hover-lift:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
 }
 
 /* Progress bar animation */
@@ -208,4 +208,42 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #a1a1a1;
+}
+
+
+/* Glassmorphism utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-card-dark {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Soft shadows for modern cards */
+.shadow-soft {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-soft-lg {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #B8A7FF 0%, #8B5CF6 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #CFF8E6 0%, #10B981 100%);
+}
+
+.bg-gradient-soft {
+  background: linear-gradient(135deg, #F5F3FF 0%, #ECFDF5 100%);
 }

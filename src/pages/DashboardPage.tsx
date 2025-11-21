@@ -7,7 +7,8 @@ import { LEARNING_PATHS } from '../data/lessons';
 import { Card } from '../components/ui/Card';
 import { PathCard } from '../components/features/PathCard';
 import { AchievementCard } from '../components/features/AchievementCard';
-import { Trophy, Flame, Target, Wallet, Sparkles, Star, Zap, ArrowRight } from 'lucide-react';
+import { FloatingXPBadge } from '../components/features/FloatingXPBadge';
+import { Trophy, Flame, Target, Wallet, Sparkles, Star, Zap, ArrowRight, BookOpen, Award } from 'lucide-react';
 
 // Motivational greetings based on time of day
 const getGreeting = () => {
@@ -17,15 +18,14 @@ const getGreeting = () => {
   return 'Good evening';
 };
 
-// Motivational messages
-const MOTIVATIONAL_MESSAGES = [
-  'Ready to learn something new today?',
-  'Every lesson brings you closer to crypto mastery!',
-  'Great things take time. Keep going!',
-  'You\'re doing amazing! Keep it up!',
-  'Knowledge is power. Let\'s level up!',
-  'Another day, another opportunity to grow!',
-];
+// Motivational messages based on progress
+const getMotivationalMessage = (streak: number, totalXP: number) => {
+  if (streak >= 7) return 'Amazing streak! You\'re on fire!';
+  if (streak >= 3) return 'Keep that streak going strong!';
+  if (totalXP >= 500) return 'You\'re becoming a crypto expert!';
+  if (totalXP >= 100) return 'Great progress on your learning journey!';
+  return 'Ready to learn something new today?';
+};
 
 export function DashboardPage() {
   const { user, profile } = useAuth();
@@ -34,9 +34,6 @@ export function DashboardPage() {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
   const [loading, setLoading] = useState(true);
-  const [motivationalMessage] = useState(
-    MOTIVATIONAL_MESSAGES[Math.floor(Math.random() * MOTIVATIONAL_MESSAGES.length)]
-  );
 
   useEffect(() => {
     if (!user) {
@@ -100,7 +97,7 @@ export function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-primary-50 to-neutral-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-success-50 flex items-center justify-center">
         <motion.div 
           className="text-center"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -113,12 +110,14 @@ export function DashboardPage() {
     );
   }
 
+  const motivationalMessage = getMotivationalMessage(profile?.current_streak || 0, profile?.total_xp || 0);
+
   // Animation variants for staggered children
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.1 }
+      transition: { staggerChildren: 0.08 }
     }
   };
 
@@ -128,138 +127,180 @@ export function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-50/50 to-neutral-50 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-success-50 py-12 relative">
+      {/* Floating XP Badge */}
+      <FloatingXPBadge xp={profile?.total_xp || 0} level={profile?.user_level || 1} />
+
       <div className="container mx-auto px-4">
-        {/* Welcome Header */}
+        {/* Hero Welcome Card */}
         <motion.div 
-          className="mb-12"
-          initial={{ opacity: 0, y: -20 }}
+          className="mb-10"
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6, type: 'spring' }}
         >
-          <div className="flex items-center gap-2 mb-2">
-            <h1 className="text-h1 text-neutral-900">
-              {getGreeting()}, {profile?.full_name || 'Crypto Learner'}!
-            </h1>
-            <motion.div
-              animate={{ rotate: [0, 15, -15, 0] }}
-              transition={{ duration: 1, repeat: Infinity, repeatDelay: 3 }}
-            >
-              <Sparkles className="w-8 h-8 text-primary-500" />
-            </motion.div>
-          </div>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-large text-neutral-700">
-            <span>{motivationalMessage}</span>
-            <span className="hidden sm:inline text-neutral-400">|</span>
-            <div className="flex items-center gap-1 text-success-600">
-              <Wallet className="w-4 h-4" />
-              <span className="font-mono text-small">{user ? truncateAddress(user.walletAddress) : ''}</span>
+          <Card className="relative overflow-hidden border-2 border-primary-100">
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-pastel/20 via-purple-100/30 to-success-pastel/20 opacity-60" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-300/20 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-success-300/20 to-transparent rounded-full blur-3xl" />
+            
+            <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-3">
+                  <h1 className="text-4xl md:text-5xl font-bold text-neutral-900">
+                    {getGreeting()}, {profile?.full_name || 'Learner'}!
+                  </h1>
+                  <motion.div
+                    animate={{ 
+                      rotate: [0, 15, -15, 0],
+                      scale: [1, 1.1, 1]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                  >
+                    <Sparkles className="w-8 h-8 text-primary-500" />
+                  </motion.div>
+                </div>
+                <p className="text-xl text-neutral-700 mb-4">{motivationalMessage}</p>
+                <div className="flex items-center gap-2 text-success-600">
+                  <Wallet className="w-5 h-5" />
+                  <span className="font-mono text-sm">{user ? truncateAddress(user.walletAddress) : ''}</span>
+                </div>
+              </div>
+              
+              {/* Mascot Area - Can add an illustration here */}
+              <motion.div
+                className="hidden md:flex items-center justify-center w-32 h-32 bg-gradient-to-br from-primary-200 to-success-200 rounded-3xl"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <BookOpen className="w-16 h-16 text-primary-600" />
+              </motion.div>
             </div>
-          </div>
+          </Card>
         </motion.div>
 
-        {/* Stats Header */}
+        {/* Enhanced Stats Grid */}
         <motion.div 
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
+          {/* Level Stat */}
           <motion.div variants={itemVariants}>
-            <Card className="card-hover-lift">
-              <div className="flex items-center gap-3">
-                <motion.div 
-                  className="w-12 h-12 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                >
-                  <Target className="w-6 h-6 text-primary-600" />
-                </motion.div>
-                <div>
-                  <p className="text-caption text-neutral-500">Level</p>
-                  <motion.p 
-                    className="text-3xl font-bold text-neutral-900"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
+            <Card className="card-hover-lift relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-primary-100/50" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-3">
+                  <motion.div 
+                    className="w-14 h-14 bg-gradient-to-br from-primary-400 to-primary-600 rounded-2xl flex items-center justify-center shadow-glow-purple"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
                   >
-                    {profile?.user_level || 1}
-                  </motion.p>
+                    <Target className="w-7 h-7 text-white" />
+                  </motion.div>
+                  <div>
+                    <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mb-1">Level</p>
+                    <motion.p 
+                      className="text-4xl font-bold bg-gradient-to-br from-primary-600 to-purple-600 bg-clip-text text-transparent"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
+                    >
+                      {profile?.user_level || 1}
+                    </motion.p>
+                  </div>
                 </div>
               </div>
             </Card>
           </motion.div>
           
+          {/* XP Stat */}
           <motion.div variants={itemVariants}>
-            <Card className="card-hover-lift">
-              <div className="flex items-center gap-3">
-                <motion.div 
-                  className="w-12 h-12 bg-gradient-to-br from-success-100 to-success-200 rounded-full flex items-center justify-center"
-                  whileHover={{ scale: 1.1, rotate: -5 }}
-                >
-                  <Trophy className="w-6 h-6 text-success-600" />
-                </motion.div>
-                <div>
-                  <p className="text-caption text-neutral-500">Total XP</p>
-                  <motion.p 
-                    className="text-3xl font-bold text-neutral-900"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 200, delay: 0.3 }}
+            <Card className="card-hover-lift relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-success-50 to-success-100/50" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-3">
+                  <motion.div 
+                    className="w-14 h-14 bg-gradient-to-br from-success-400 to-success-600 rounded-2xl flex items-center justify-center shadow-glow-green"
+                    whileHover={{ scale: 1.1, rotate: -5 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
                   >
-                    {profile?.total_xp || 0}
-                  </motion.p>
+                    <Trophy className="w-7 h-7 text-white" />
+                  </motion.div>
+                  <div>
+                    <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mb-1">Total XP</p>
+                    <motion.p 
+                      className="text-4xl font-bold bg-gradient-to-br from-success-600 to-emerald-600 bg-clip-text text-transparent"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 200, delay: 0.3 }}
+                    >
+                      {profile?.total_xp || 0}
+                    </motion.p>
+                  </div>
                 </div>
               </div>
             </Card>
           </motion.div>
           
+          {/* Streak Stat */}
           <motion.div variants={itemVariants}>
-            <Card className="card-hover-lift">
-              <div className="flex items-center gap-3">
-                <motion.div 
-                  className="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center"
-                  animate={{ 
-                    scale: profile?.current_streak && profile.current_streak > 0 ? [1, 1.1, 1] : 1
-                  }}
-                  transition={{ duration: 1, repeat: Infinity }}
-                >
-                  <Flame className="w-6 h-6 text-orange-500" />
-                </motion.div>
-                <div>
-                  <p className="text-caption text-neutral-500">Streak</p>
-                  <motion.p 
-                    className="text-3xl font-bold text-neutral-900"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 200, delay: 0.4 }}
+            <Card className="card-hover-lift relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-orange-100/50" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-3">
+                  <motion.div 
+                    className="w-14 h-14 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-glow-orange"
+                    animate={{ 
+                      scale: profile?.current_streak && profile.current_streak > 0 ? [1, 1.1, 1] : 1
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
                   >
-                    {profile?.current_streak || 0}
-                    <span className="text-sm font-normal text-neutral-500 ml-1">days</span>
-                  </motion.p>
+                    <Flame className="w-7 h-7 text-white" />
+                  </motion.div>
+                  <div>
+                    <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mb-1">Streak</p>
+                    <motion.p 
+                      className="text-4xl font-bold bg-gradient-to-br from-orange-600 to-orange-500 bg-clip-text text-transparent"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 200, delay: 0.4 }}
+                    >
+                      {profile?.current_streak || 0}
+                      <span className="text-sm font-normal text-neutral-500 ml-1">days</span>
+                    </motion.p>
+                  </div>
                 </div>
               </div>
             </Card>
           </motion.div>
           
+          {/* Badges Stat */}
           <motion.div variants={itemVariants}>
-            <Card className="card-hover-lift">
-              <div className="flex items-center gap-3">
-                <motion.div 
-                  className="w-12 h-12 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full flex items-center justify-center"
-                  whileHover={{ scale: 1.1 }}
-                >
-                  <Star className="w-6 h-6 text-purple-600" />
-                </motion.div>
-                <div>
-                  <p className="text-caption text-neutral-500">Badges</p>
-                  <motion.p 
-                    className="text-3xl font-bold text-neutral-900"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: 'spring', stiffness: 200, delay: 0.5 }}
+            <Card className="card-hover-lift relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-purple-100/50" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-4 mb-3">
+                  <motion.div 
+                    className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center shadow-glow-purple"
+                    whileHover={{ scale: 1.1, rotate: 360 }}
+                    transition={{ type: 'spring', stiffness: 200 }}
                   >
-                    {userAchievements.length}
-                  </motion.p>
+                    <Award className="w-7 h-7 text-white" />
+                  </motion.div>
+                  <div>
+                    <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mb-1">Badges</p>
+                    <motion.p 
+                      className="text-4xl font-bold bg-gradient-to-br from-purple-600 to-pink-600 bg-clip-text text-transparent"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 200, delay: 0.5 }}
+                    >
+                      {userAchievements.length}
+                    </motion.p>
+                  </div>
                 </div>
               </div>
             </Card>
@@ -271,20 +312,24 @@ export function DashboardPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
+            className="mb-10"
           >
-            <Card className="bg-gradient-to-r from-primary-50 to-success-50 border-2 border-primary-200">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-primary-100 rounded-full flex items-center justify-center">
-                  <Zap className="w-8 h-8 text-primary-600" />
-                </div>
+            <Card className="bg-gradient-to-r from-primary-50 via-purple-50 to-success-50 border-2 border-primary-200">
+              <div className="flex items-center gap-6">
+                <motion.div 
+                  className="w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-glow-purple"
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Zap className="w-9 h-9 text-white" />
+                </motion.div>
                 <div className="flex-1">
-                  <h3 className="text-h3 text-neutral-900 mb-1">Start Your Journey!</h3>
-                  <p className="text-body text-neutral-700">
+                  <h3 className="text-2xl font-bold text-neutral-900 mb-2">Start Your Journey!</h3>
+                  <p className="text-lg text-neutral-700">
                     Complete your first lesson to earn XP and unlock achievements. Let's go!
                   </p>
                 </div>
-                <ArrowRight className="w-6 h-6 text-primary-600" />
+                <ArrowRight className="w-7 h-7 text-primary-600 hidden md:block" />
               </div>
             </Card>
           </motion.div>
@@ -297,13 +342,13 @@ export function DashboardPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <div className="flex items-center gap-2 mb-6">
-            <h2 className="text-h2 text-neutral-900">Learning Paths</h2>
+          <div className="flex items-center gap-3 mb-8">
+            <h2 className="text-3xl font-bold text-neutral-900">Learning Paths</h2>
             <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              animate={{ scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 3, repeat: Infinity }}
             >
-              <Sparkles className="w-5 h-5 text-primary-500" />
+              <Sparkles className="w-6 h-6 text-primary-500" />
             </motion.div>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
@@ -331,18 +376,18 @@ export function DashboardPage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
           >
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <h2 className="text-h2 text-neutral-900">Recent Achievements</h2>
-                <Trophy className="w-5 h-5 text-primary-500" />
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-3">
+                <h2 className="text-3xl font-bold text-neutral-900">Recent Achievements</h2>
+                <Trophy className="w-6 h-6 text-primary-500" />
               </div>
               <motion.button
                 onClick={() => navigate('/profile')}
-                className="text-body text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1"
+                className="text-lg text-primary-600 hover:text-primary-700 font-semibold flex items-center gap-2 group"
                 whileHover={{ x: 5 }}
               >
                 View All
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </motion.button>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
