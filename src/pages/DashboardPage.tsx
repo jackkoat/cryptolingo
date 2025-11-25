@@ -10,6 +10,7 @@ import { AchievementCard } from '../components/features/AchievementCard';
 import { FloatingXPBadge } from '../components/features/FloatingXPBadge';
 import { WelcomeTutorial } from '../components/features/WelcomeTutorial';
 import { MiniQuestWidget } from '../components/features/MiniQuestWidget';
+import { InteractiveBackground } from '../components/InteractiveBackground';
 import { Trophy, Flame, Target, Wallet, Sparkles, Star, Zap, ArrowRight, BookOpen, Award } from 'lucide-react';
 import '../styles/onboarding-animations.css';
 
@@ -137,7 +138,7 @@ export function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-success-50 flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <motion.div 
           className="text-center"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -167,7 +168,8 @@ export function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-success-50 py-12 relative">
+    <div className="min-h-screen bg-transparent py-12 relative">
+      <InteractiveBackground />
       {/* Floating XP Badge */}
       <FloatingXPBadge xp={profile?.total_xp || 0} level={profile?.user_level || 1} />
 
@@ -181,9 +183,9 @@ export function DashboardPage() {
         >
           <Card className="relative overflow-hidden border-2 border-primary-100">
             {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary-pastel/20 via-purple-100/30 to-success-pastel/20 opacity-60" />
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-300/20 to-transparent rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-success-300/20 to-transparent rounded-full blur-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-pastel/10 via-purple-100/15 to-success-pastel/10 opacity-20" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-300/10 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-success-300/10 to-transparent rounded-full blur-3xl" />
             
             <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="flex-1">
@@ -210,7 +212,7 @@ export function DashboardPage() {
               
               {/* Mascot Area - Can add an illustration here */}
               <motion.div
-                className="hidden md:flex items-center justify-center w-32 h-32 bg-gradient-to-br from-primary-200 to-success-200 rounded-3xl"
+                className="hidden md:flex items-center justify-center w-32 h-32 bg-gradient-to-br from-primary-200/40 to-success-200/40 rounded-3xl"
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               >
@@ -230,7 +232,7 @@ export function DashboardPage() {
           {/* Level Stat */}
           <motion.div variants={itemVariants}>
             <Card className="card-hover-lift relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-primary-100/50" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-50/50 to-primary-100/25" />
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-3">
                   <motion.div 
@@ -259,7 +261,7 @@ export function DashboardPage() {
           {/* XP Stat */}
           <motion.div variants={itemVariants}>
             <Card className="card-hover-lift relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-success-50 to-success-100/50" />
+              <div className="absolute inset-0 bg-gradient-to-br from-success-50/50 to-success-100/25" />
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-3">
                   <motion.div 
@@ -288,7 +290,7 @@ export function DashboardPage() {
           {/* Streak Stat */}
           <motion.div variants={itemVariants}>
             <Card className="card-hover-lift relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-orange-100/50" />
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-orange-100/25" />
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-3">
                   <motion.div 
@@ -320,7 +322,7 @@ export function DashboardPage() {
           {/* Badges Stat */}
           <motion.div variants={itemVariants}>
             <Card className="card-hover-lift relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-purple-100/50" />
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-purple-100/25" />
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-3">
                   <motion.div 

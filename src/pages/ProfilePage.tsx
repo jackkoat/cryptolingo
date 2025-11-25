@@ -6,6 +6,7 @@ import { supabase, Achievement, UserAchievement, UserProgress } from '../lib/sup
 import { Card } from '../components/ui/Card';
 import { AchievementCard } from '../components/features/AchievementCard';
 import { FloatingXPBadge } from '../components/features/FloatingXPBadge';
+import { InteractiveBackground } from '../components/InteractiveBackground';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Wallet, Trophy, Target, Flame, Edit2, Check, X, Copy, ExternalLink, Award, BookOpen, Calendar, TrendingUp, Lock, Crown, Sparkles as SparklesIcon, GraduationCap } from 'lucide-react';
@@ -101,7 +102,7 @@ export function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-success-50 flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <motion.div
           className="text-center"
           initial={{ opacity: 0, scale: 0.8 }}
@@ -115,7 +116,8 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-success-50 py-12 relative">
+    <div className="min-h-screen bg-transparent py-12 relative">
+      <InteractiveBackground />
       {/* Floating XP Badge */}
       <FloatingXPBadge xp={profile?.total_xp || 0} level={profile?.user_level || 1} />
 
@@ -245,7 +247,7 @@ export function ProfilePage() {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {/* Level */}
                 <Card className="text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-primary-100/50" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary-50 to-primary-100/20" />
                   <div className="relative z-10">
                     <motion.div 
                       className="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-primary-400 to-primary-600 rounded-2xl flex items-center justify-center shadow-glow-purple"
@@ -262,7 +264,7 @@ export function ProfilePage() {
 
                 {/* Total XP */}
                 <Card className="text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-success-50 to-success-100/50" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-success-50 to-success-100/20" />
                   <div className="relative z-10">
                     <motion.div 
                       className="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-success-400 to-success-600 rounded-2xl flex items-center justify-center shadow-glow-green"
@@ -279,7 +281,7 @@ export function ProfilePage() {
 
                 {/* Current Streak */}
                 <Card className="text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-orange-100/50" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-50 to-orange-100/20" />
                   <div className="relative z-10">
                     <motion.div 
                       className="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-glow-orange"
@@ -297,7 +299,7 @@ export function ProfilePage() {
 
                 {/* Lessons Completed */}
                 <Card className="text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-info-50 to-info-100/50" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-info-50 to-info-100/20" />
                   <div className="relative z-10">
                     <motion.div 
                       className="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-info-400 to-info-600 rounded-2xl flex items-center justify-center"
@@ -314,7 +316,7 @@ export function ProfilePage() {
 
                 {/* Badges Earned */}
                 <Card className="text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-purple-100/50" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-50 to-purple-100/20" />
                   <div className="relative z-10">
                     <motion.div 
                       className="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl flex items-center justify-center shadow-glow-purple"
@@ -332,7 +334,7 @@ export function ProfilePage() {
 
                 {/* Longest Streak */}
                 <Card className="text-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-warning-50 to-warning-100/50" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-warning-50 to-warning-100/20" />
                   <div className="relative z-10">
                     <motion.div 
                       className="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-warning-400 to-warning-600 rounded-2xl flex items-center justify-center"

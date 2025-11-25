@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Navigation } from './components/layout/Navigation';
 import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { PathsPage } from './pages/PathsPage';
 import { LearningPathPage } from './pages/LearningPathPage';
 import { LessonViewPage } from './pages/LessonViewPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -48,6 +49,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/paths"
+          element={
+            <ProtectedRoute>
+              <PathsPage />
             </ProtectedRoute>
           }
         />

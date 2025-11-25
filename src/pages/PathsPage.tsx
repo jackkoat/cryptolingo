@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase, UserProgress } from '../lib/supabase';
 import { LEARNING_PATHS } from '../data/lessons';
 import { PathCard } from '../components/features/PathCard';
+import { InteractiveBackground } from '../components/InteractiveBackground';
 import { Sparkles } from 'lucide-react';
 
 export function PathsPage() {
@@ -50,7 +51,7 @@ export function PathsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-success-50 flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-body text-neutral-700">Loading learning paths...</p>
@@ -60,7 +61,8 @@ export function PathsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-success-50 py-12">
+    <div className="min-h-screen bg-transparent py-12">
+      <InteractiveBackground />
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div

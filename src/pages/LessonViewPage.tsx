@@ -8,6 +8,7 @@ import { QuestionCard } from '../components/features/QuestionCard';
 import { LessonComplete } from '../components/features/LessonComplete';
 import { Button } from '../components/ui/Button';
 import { ProgressBar } from '../components/ui/ProgressBar';
+import { InteractiveBackground } from '@/components/InteractiveBackground';
 import { ArrowRight, X, Heart, Zap } from 'lucide-react';
 
 export function LessonViewPage() {
@@ -179,7 +180,8 @@ export function LessonViewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-white">
+    <div className="min-h-screen bg-transparent">
+      <InteractiveBackground />
       {/* Progress Header */}
       <motion.div 
         className="sticky top-0 bg-white/80 backdrop-blur-md shadow-sm z-20 border-b border-neutral-100"

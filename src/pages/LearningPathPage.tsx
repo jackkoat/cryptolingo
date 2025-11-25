@@ -6,6 +6,7 @@ import { LEARNING_PATHS, LESSONS } from '../data/lessons';
 import { Card } from '../components/ui/Card';
 import { LessonCard } from '../components/features/LessonCard';
 import { ProgressBar } from '../components/ui/ProgressBar';
+import { InteractiveBackground } from '../components/InteractiveBackground';
 import { BookOpen, ArrowLeft } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
@@ -47,7 +48,7 @@ export function LearningPathPage() {
 
   if (!path || loading) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-body text-neutral-700">Loading...</p>
@@ -82,7 +83,8 @@ export function LearningPathPage() {
   const firstUncompletedLessonId = getFirstUncompletedLessonId();
 
   return (
-    <div className="min-h-screen bg-neutral-50 py-12">
+    <div className="min-h-screen bg-transparent py-12">
+      <InteractiveBackground />
       <div className="container mx-auto px-4">
         <Button
           variant="secondary"
