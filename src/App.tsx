@@ -4,18 +4,19 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Navigation } from './components/layout/Navigation';
 import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { PathsPage } from './pages/PathsPage';
 import { LearningPathPage } from './pages/LearningPathPage';
 import { LessonViewPage } from './pages/LessonViewPage';
 import { ProfilePage } from './pages/ProfilePage';
+// Import the new background component
+import { InteractiveBackground } from './components/InteractiveBackground';
 
-// Protected Route component - checks wallet connection
+// Protected Route component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+      <div className="min-h-screen bg-transparent flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-body text-neutral-700">Loading...</p>
@@ -35,7 +36,10 @@ function AppRoutes() {
   const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-transparent relative">
+      {/* Add Background Effect Here */}
+      <InteractiveBackground />
+      
       <Navigation />
       <Routes>
         <Route path="/" element={user ? <Navigate to="/dashboard" /> : <LandingPage />} />
@@ -44,14 +48,6 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/paths"
-          element={
-            <ProtectedRoute>
-              <PathsPage />
             </ProtectedRoute>
           }
         />
@@ -79,7 +75,6 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        {/* Redirect old auth route to landing */}
         <Route path="/auth" element={<Navigate to="/" replace />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
