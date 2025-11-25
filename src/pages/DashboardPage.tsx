@@ -48,8 +48,8 @@ export function DashboardPage() {
   }, [user, navigate]);
 
   useEffect(() => {
-    // Show tutorial for new users
-    if (profile && !profile.has_seen_tutorial && !loading) {
+    // Show tutorial for new users - only once per browser session
+    if (profile && !profile.has_seen_tutorial && !loading && !localStorage.getItem('tutorialShown')) {
       setShowTutorial(true);
     }
   }, [profile, loading]);
@@ -108,6 +108,7 @@ export function DashboardPage() {
 
   const handleTutorialComplete = async () => {
     setShowTutorial(false);
+    localStorage.setItem('tutorialShown', 'true');
     if (user && profile) {
       try {
         await updateProfile({
@@ -122,6 +123,7 @@ export function DashboardPage() {
 
   const handleTutorialSkip = async () => {
     setShowTutorial(false);
+    localStorage.setItem('tutorialShown', 'true');
     if (user && profile) {
       try {
         await updateProfile({

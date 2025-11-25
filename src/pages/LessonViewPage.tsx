@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
 import { LESSONS, Question } from '../data/lessons';
 import { QuestionCard } from '../components/features/QuestionCard';
 import { LessonComplete } from '../components/features/LessonComplete';
@@ -70,20 +70,22 @@ export function LessonViewPage() {
 
     try {
       if (user) {
-        // Save progress using wallet address as user_id
-        await supabase
-          .from('user_progress')
-          .upsert({
-            user_id: user.walletAddress,
-            path_id: lesson.pathId,
-            lesson_id: lesson.id,
-            is_completed: true,
-            score: correctAnswers,
-            xp_earned: earnedXP,
-            accuracy_percentage: accuracy,
-            time_taken_seconds: timeTaken,
-            completed_at: new Date().toISOString(),
-          });
+        // Save progress using wallet address as user_id (skip in demo mode)
+        if (isSupabaseConfigured) {
+          await supabase
+            .from('user_progress')
+            .upsert({
+              user_id: user.walletAddress,
+              path_id: lesson.pathId,
+              lesson_id: lesson.id,
+              is_completed: true,
+              score: correctAnswers,
+              xp_earned: earnedXP,
+              accuracy_percentage: accuracy,
+              time_taken_seconds: timeTaken,
+              completed_at: new Date().toISOString(),
+            });
+        }
 
         // Update user profile
         const newTotalXP = (profile?.total_xp || 0) + earnedXP;
@@ -95,8 +97,10 @@ export function LessonViewPage() {
           last_activity_date: new Date().toISOString().split('T')[0],
         });
 
-        // Check and award achievements
-        await checkAndAwardAchievements(correctAnswers, totalQuestions, newTotalXP);
+        // Check and award achievements (skip in demo mode)
+        if (isSupabaseConfigured) {
+          await checkAndAwardAchievements(correctAnswers, totalQuestions, newTotalXP);
+        }
 
         await refreshProfile();
       }

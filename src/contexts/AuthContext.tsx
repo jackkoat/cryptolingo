@@ -254,8 +254,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const updateProfile = async (updates: Partial<UserProfile>) => {
-    if (!user || !isSupabaseConfigured) {
+    if (!user) {
       throw new Error('Wallet connection required');
+    }
+
+    if (!isSupabaseConfigured) {
+      // Demo mode - update local profile state
+      setProfile(prev => prev ? { ...prev, ...updates } : null);
+      return;
     }
 
     const { data, error } = await supabase
