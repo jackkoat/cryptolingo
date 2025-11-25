@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { GraduationCap, Menu, X, User, LogOut, Wallet } from 'lucide-react';
+import { Menu, X, User, LogOut, Wallet } from 'lucide-react';
 import { useAuth, truncateAddress } from '../../contexts/AuthContext';
 import { Button } from '../ui/Button';
 import { cn } from '../../lib/utils';
@@ -47,7 +47,7 @@ export function Navigation() {
   return (
     <nav
       className={cn(
-        'sticky top-0 z-50 transition-all duration-normal',
+        'sticky top-0 z-50 transition-all duration-normal py-2',
         'bg-white/90 backdrop-blur-md',
         isScrolled && 'shadow-sm'
       )}
@@ -56,7 +56,7 @@ export function Navigation() {
         <div className="flex items-center justify-between h-18">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <GraduationCap className="w-10 h-10 text-primary-600" />
+            <img src="/logo.jpeg" alt="CryptoLingo" className="w-10 h-10" />
             <span className="text-h3 text-primary-600 font-bold">CryptoLingo</span>
           </Link>
 
