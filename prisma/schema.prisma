@@ -1,0 +1,63 @@
+// Prisma schema for CryptoLingo
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String         @id // wallet address
+  username   String?
+  level      Int            @default(1)
+  totalXp    Int            @default(0)
+  streakDays Int            @default(0)
+  lastActive DateTime?
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  progress   UserProgress[]
+
+  @@map("users")
+}
+
+model LearningPath {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  description  String
+  totalXp      Int
+  totalLessons Int
+  order        Int
+  lessons      Lesson[]
+
+  @@map("learning_paths")
+}
+
+model Lesson {
+  id             String         @id @default(cuid())
+  learningPathId String
+  title          String
+  content        Json // Store questions and options as JSON
+  order          Int
+  xpReward       Int
+  learningPath   LearningPath   @relation(fields: [learningPathId], references: [id], onDelete: Cascade)
+  progress       UserProgress[]
+
+  @@map("lessons")
+}
+
+model UserProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+  xpEarned    Int       @default(0)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@map("user_progress")
+}
