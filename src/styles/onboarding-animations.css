@@ -1,0 +1,58 @@
+/* Pulsing animation for first lesson */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.8), 0 0 60px rgba(139, 92, 246, 0.5), 0 0 80px rgba(16, 185, 129, 0.3);
+    transform: scale(1.02);
+  }
+}
+
+@keyframes pulseGlowBorder {
+  0%, 100% {
+    border-color: rgba(139, 92, 246, 0.5);
+  }
+  50% {
+    border-color: rgba(139, 92, 246, 1);
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+  position: relative;
+}
+
+.pulse-glow-border {
+  animation: pulseGlowBorder 2s ease-in-out infinite;
+  border-width: 3px;
+  border-style: solid;
+}
+
+/* Tooltip for first lesson */
+.first-lesson-tooltip {
+  position: absolute;
+  top: -45px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #8B5CF6 0%, #10B981 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  z-index: 10;
+}
+
+.first-lesson-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: #8B5CF6;
+}

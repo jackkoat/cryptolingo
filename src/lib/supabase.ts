@@ -28,6 +28,8 @@ export interface UserProfile {
   current_streak: number;
   longest_streak: number;
   last_activity_date?: string;
+  has_seen_tutorial?: boolean;
+  tutorial_completed_at?: string;
   created_at: string;
   updated_at: string;
 }

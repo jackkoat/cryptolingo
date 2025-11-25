@@ -69,6 +69,18 @@ export function LearningPathPage() {
     return userProgress.some(p => p.lesson_id === lessonId && p.is_completed);
   };
 
+  // Find the first uncompleted lesson for pulsing glow animation
+  const getFirstUncompletedLessonId = () => {
+    for (let i = 0; i < pathLessons.length; i++) {
+      if (!isLessonLocked(i) && !isLessonCompleted(pathLessons[i].id)) {
+        return pathLessons[i].id;
+      }
+    }
+    return null;
+  };
+
+  const firstUncompletedLessonId = getFirstUncompletedLessonId();
+
   return (
     <div className="min-h-screen bg-neutral-50 py-12">
       <div className="container mx-auto px-4">
@@ -130,6 +142,7 @@ export function LearningPathPage() {
                 lesson={lesson}
                 isLocked={isLessonLocked(index)}
                 isCompleted={isLessonCompleted(lesson.id)}
+                isFirstLesson={lesson.id === firstUncompletedLessonId}
                 onClick={() => !isLessonLocked(index) && navigate(`/lesson/${lesson.id}`)}
               />
             ))}

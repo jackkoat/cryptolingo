@@ -8,7 +8,10 @@ import { Card } from '../components/ui/Card';
 import { PathCard } from '../components/features/PathCard';
 import { AchievementCard } from '../components/features/AchievementCard';
 import { FloatingXPBadge } from '../components/features/FloatingXPBadge';
+import { WelcomeTutorial } from '../components/features/WelcomeTutorial';
+import { MiniQuestWidget } from '../components/features/MiniQuestWidget';
 import { Trophy, Flame, Target, Wallet, Sparkles, Star, Zap, ArrowRight, BookOpen, Award } from 'lucide-react';
+import '../styles/onboarding-animations.css';
 
 // Motivational greetings based on time of day
 const getGreeting = () => {
@@ -28,12 +31,13 @@ const getMotivationalMessage = (streak: number, totalXP: number) => {
 };
 
 export function DashboardPage() {
-  const { user, profile } = useAuth();
+  const { user, profile, updateProfile } = useAuth();
   const navigate = useNavigate();
   const [userProgress, setUserProgress] = useState<UserProgress[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [userAchievements, setUserAchievements] = useState<UserAchievement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -42,6 +46,13 @@ export function DashboardPage() {
     }
     loadDashboardData();
   }, [user, navigate]);
+
+  useEffect(() => {
+    // Show tutorial for new users
+    if (profile && !profile.has_seen_tutorial && !loading) {
+      setShowTutorial(true);
+    }
+  }, [profile, loading]);
 
   async function loadDashboardData() {
     if (!user) return;
@@ -94,6 +105,33 @@ export function DashboardPage() {
     .slice(0, 3);
 
   const totalLessonsCompleted = userProgress.filter(p => p.is_completed).length;
+
+  const handleTutorialComplete = async () => {
+    setShowTutorial(false);
+    if (user && profile) {
+      try {
+        await updateProfile({
+          has_seen_tutorial: true,
+          tutorial_completed_at: new Date().toISOString(),
+        });
+      } catch (error) {
+        console.error('Error updating tutorial status:', error);
+      }
+    }
+  };
+
+  const handleTutorialSkip = async () => {
+    setShowTutorial(false);
+    if (user && profile) {
+      try {
+        await updateProfile({
+          has_seen_tutorial: true,
+        });
+      } catch (error) {
+        console.error('Error updating tutorial status:', error);
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -307,32 +345,9 @@ export function DashboardPage() {
           </motion.div>
         </motion.div>
 
-        {/* Encouraging message for new users */}
+        {/* MiniQuest Widget for New Users */}
         {totalLessonsCompleted === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-10"
-          >
-            <Card className="bg-gradient-to-r from-primary-50 via-purple-50 to-success-50 border-2 border-primary-200">
-              <div className="flex items-center gap-6">
-                <motion.div 
-                  className="w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-500 rounded-2xl flex items-center justify-center shadow-glow-purple"
-                  animate={{ scale: [1, 1.1, 1] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                >
-                  <Zap className="w-9 h-9 text-white" />
-                </motion.div>
-                <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-neutral-900 mb-2">Start Your Journey!</h3>
-                  <p className="text-lg text-neutral-700">
-                    Complete your first lesson to earn XP and unlock achievements. Let's go!
-                  </p>
-                </div>
-                <ArrowRight className="w-7 h-7 text-primary-600 hidden md:block" />
-              </div>
-            </Card>
-          </motion.div>
+          <MiniQuestWidget />
         )}
 
         {/* Learning Paths */}
@@ -414,6 +429,14 @@ export function DashboardPage() {
           </motion.section>
         )}
       </div>
+
+      {/* Welcome Tutorial for New Users */}
+      {showTutorial && (
+        <WelcomeTutorial
+          onComplete={handleTutorialComplete}
+          onSkip={handleTutorialSkip}
+        />
+      )}
     </div>
   );
 }

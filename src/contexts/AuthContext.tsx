@@ -105,6 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user_level: 1,
         current_streak: 0,
         longest_streak: 0,
+        has_seen_tutorial: false,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       });
@@ -136,6 +137,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           user_level: 1,
           current_streak: 0,
           longest_streak: 0,
+          has_seen_tutorial: false,
         };
 
         const { data: createdProfile, error: createError } = await supabase
@@ -155,6 +157,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           
           if (retryProfile) {
             setProfile(retryProfile);
+          } else {
+            // Fallback to demo profile if backend fails
+            console.warn('[CryptoLingo] Using demo profile due to backend errors');
+            setProfile({
+              id: walletAddress,
+              email: '',
+              full_name: 'Crypto Learner',
+              wallet_address: walletAddress,
+              total_xp: 0,
+              user_level: 1,
+              current_streak: 0,
+              longest_streak: 0,
+              has_seen_tutorial: false,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            });
           }
         } else if (createdProfile) {
           setProfile(createdProfile);
@@ -204,7 +222,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const connectWallet = async () => {
     if (!window.solana) {
+      // Open Phantom installation page in new tab
       window.open('https://phantom.app/', '_blank');
+      alert('Phantom wallet not detected. Please install the Phantom browser extension to continue.');
       return;
     }
 

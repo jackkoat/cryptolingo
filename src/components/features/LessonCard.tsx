@@ -14,17 +14,19 @@ interface LessonCardProps {
   };
   isLocked?: boolean;
   isCompleted?: boolean;
+  isFirstLesson?: boolean;
   onClick?: () => void;
 }
 
-export function LessonCard({ lesson, isLocked = false, isCompleted = false, onClick }: LessonCardProps) {
+export function LessonCard({ lesson, isLocked = false, isCompleted = false, isFirstLesson = false, onClick }: LessonCardProps) {
   return (
     <Card
       hover={!isLocked}
       onClick={!isLocked ? onClick : undefined}
       className={cn(
         'relative',
-        isLocked && 'opacity-60 cursor-not-allowed'
+        isLocked && 'opacity-60 cursor-not-allowed',
+        isFirstLesson && !isCompleted && !isLocked && 'pulse-glow pulse-glow-border'
       )}
     >
       <div className="flex items-start justify-between gap-4">
