@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut, Wallet } from 'lucide-react';
+import { Menu, X, User, LogOut, Wallet, Twitter } from 'lucide-react';
 import { useAuth, truncateAddress } from '../../contexts/AuthContext';
 import { Button } from '../ui/Button';
 import { cn } from '../../lib/utils';
@@ -80,6 +80,16 @@ export function Navigation() {
 
           {/* Right Actions */}
           <div className="hidden md:flex items-center gap-4">
+            {/* X (Twitter) Link */}
+            <a
+              href="https://x.com/cryptolingosite"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-neutral-700 hover:text-primary-600 transition-colors"
+              title="Follow us on X"
+            >
+              <Twitter className="w-5 h-5" />
+            </a>
             {user ? (
               <>
                 <div className="flex items-center gap-3 px-4 py-2 bg-primary-50 rounded-md">
@@ -127,6 +137,17 @@ export function Navigation() {
         {isMobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-neutral-200">
             <div className="flex flex-col gap-4">
+              {/* X (Twitter) Link */}
+              <a
+                href="https://x.com/cryptolingosite"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-body font-medium text-neutral-700 hover:text-primary-600 transition-colors py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Twitter className="w-5 h-5" />
+                Follow us on X
+              </a>
               {user && (
                 <div className="flex items-center gap-2 px-3 py-2 bg-success-50 rounded-md">
                   <Wallet className="w-4 h-4 text-success-600" />
